@@ -64,7 +64,7 @@ app.post('/api/bookings', async (req, res) => {
         }
 
         // Добавляем дату создания
-        booking.createdAt = new Date().toLocaleString('ru-RU');
+				booking.createdAt = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' });
         booking.id = Date.now(); // Простой ID
 
         // Сохраняем в файл
