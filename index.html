@@ -581,6 +581,11 @@
               <textarea id="answer5" name="answer5" placeholder="Да/нет/пока не знаю + детали" required></textarea>
             </div>
 
+            <div class="field">
+              <label for="answer6">6. Почему именно Поток? Что привело тебя к нам, а не в другое место?</label>
+              <textarea id="answer6" name="answer6" placeholder="Расскажи, что зацепило или как ты о нас узнал" required></textarea>
+            </div>
+
             <div class="button-row">
               <button class="secondary-button" type="button" id="backToApplication">Назад</button>
               <button class="main-button" type="submit" id="surveyButton">Отправить опрос</button>
@@ -702,7 +707,8 @@
           q2: document.getElementById('answer2').value.trim(),
           q3: document.getElementById('answer3').value.trim(),
           q4: document.getElementById('answer4').value.trim(),
-          q5: document.getElementById('answer5').value.trim()
+          q5: document.getElementById('answer5').value.trim(),
+          q6: document.getElementById('answer6').value.trim()
         }
       };
 

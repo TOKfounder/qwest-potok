@@ -159,7 +159,7 @@ app.post('/api/survey', async (req, res) => {
       });
     }
 
-    const requiredAnswers = ['q1', 'q2', 'q3', 'q4', 'q5'];
+    const requiredAnswers = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6'];
     const hasAllAnswers = requiredAnswers.every((key) => requiredString(answers[key]));
 
     if (!hasAllAnswers) {
@@ -184,7 +184,8 @@ app.post('/api/survey', async (req, res) => {
       q2: answers.q2.trim(),
       q3: answers.q3.trim(),
       q4: answers.q4.trim(),
-      q5: answers.q5.trim()
+      q5: answers.q5.trim(),
+      q6: answers.q6.trim()
     };
 
     applications[index].survey = survey;
@@ -217,6 +218,9 @@ ${escapeHtml(survey.q4)}
 
 <b>5. Готов ли ты поддерживать проект донатом/взносом? Если да — в каком формате?</b>
 ${escapeHtml(survey.q5)}
+
+<b>6. Почему именно Поток? Что привело тебя к нам, а не в другое место?</b>
+${escapeHtml(survey.q6)}
     `.trim();
 
     await sendToTelegram(message);
