@@ -3,742 +3,137 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Поток — запись</title>
-  <style>
-    :root {
-      --bg: #09090d;
-      --panel: rgba(15, 16, 24, 0.9);
-      --panel-strong: rgba(25, 25, 36, 0.96);
-      --text: #f7f2e8;
-      --muted: #b7b3aa;
-      --orange: #ff7a18;
-      --acid: #cbff2e;
-      --purple: #7a2cff;
-      --pink: #ff2e8a;
-      --cyan: #13d8ff;
-      --danger: #ff4757;
-      --success: #38d66b;
-      --shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 12% 18%, rgba(255, 122, 24, 0.22) 0 8%, transparent 22%),
-        radial-gradient(circle at 85% 15%, rgba(122, 44, 255, 0.28) 0 10%, transparent 26%),
-        radial-gradient(circle at 88% 82%, rgba(19, 216, 255, 0.18) 0 9%, transparent 25%),
-        linear-gradient(135deg, #07070a 0%, #12111a 42%, #08080c 100%);
-      overflow-x: hidden;
-    }
-
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    body::before {
-      opacity: 0.18;
-      background-image:
-        linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px),
-        linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
-      background-size: 56px 56px;
-      transform: rotate(-1.5deg) scale(1.05);
-    }
-
-    body::after {
-      opacity: 0.32;
-      background:
-        radial-gradient(circle, rgba(255,255,255,0.7) 0 1px, transparent 2px) 20px 40px / 110px 110px,
-        radial-gradient(circle, rgba(255,122,24,0.75) 0 1px, transparent 2px) 70px 10px / 140px 140px,
-        radial-gradient(circle, rgba(203,255,46,0.55) 0 1px, transparent 2px) 10px 90px / 160px 160px;
-    }
-
-    .page {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 28px 16px;
-    }
-
-    .layout {
-      width: min(1180px, 100%);
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    .hero,
-    .card {
-      border: 2px solid rgba(255, 255, 255, 0.12);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      overflow: hidden;
-    }
-
-    .hero {
-      position: relative;
-      min-height: 680px;
-      border-radius: 34px;
-      padding: 42px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      isolation: isolate;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 18px;
-      border-radius: 26px;
-      border: 2px dashed rgba(255, 255, 255, 0.12);
-      pointer-events: none;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      right: -90px;
-      bottom: -120px;
-      width: 430px;
-      height: 430px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 46, 138, 0.35), transparent 62%);
-      filter: blur(4px);
-      z-index: -1;
-    }
-
-    .tagline {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      width: fit-content;
-      padding: 9px 13px;
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      color: var(--acid);
-      font-weight: 800;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-
-    .tagline span {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--acid);
-      box-shadow: 0 0 18px var(--acid);
-    }
-
-    .graffiti {
-      margin-top: 52px;
-      font-family: Impact, "Arial Black", Arial, sans-serif;
-      font-size: clamp(70px, 12vw, 164px);
-      line-height: 0.82;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      color: #fff2d8;
-      transform: rotate(-4deg);
-      text-shadow:
-        4px 4px 0 #000,
-        8px 8px 0 var(--purple),
-        12px 12px 0 var(--orange),
-        0 0 22px rgba(255, 122, 24, 0.55);
-    }
-
-    .graffiti-mark {
-      position: absolute;
-      left: 38px;
-      bottom: 166px;
-      font-family: Impact, "Arial Black", Arial, sans-serif;
-      font-size: clamp(44px, 7vw, 96px);
-      color: transparent;
-      -webkit-text-stroke: 2px rgba(203,255,46,0.5);
-      opacity: 0.55;
-      transform: rotate(-8deg);
-      text-transform: uppercase;
-      pointer-events: none;
-    }
-
-    .hero-copy {
-      max-width: 590px;
-      margin-top: 72px;
-    }
-
-    .hero-copy h1 {
-      font-size: clamp(32px, 5vw, 58px);
-      line-height: 1;
-      letter-spacing: -0.04em;
-      margin-bottom: 18px;
-    }
-
-    .hero-copy p {
-      max-width: 540px;
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.65;
-    }
-
-    .hero-bottom {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 34px;
-    }
-
-    .pill {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.14);
-      color: #f2f2f2;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .card {
-      border-radius: 34px;
-      padding: 32px;
-      display: flex;
-      align-items: center;
-    }
-
-    .view {
-      width: 100%;
-      display: none;
-      animation: rise 0.35s ease both;
-    }
-
-    .view.active {
-      display: block;
-    }
-
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(14px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .step-label {
-      display: inline-block;
-      margin-bottom: 18px;
-      color: #101010;
-      background: var(--acid);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      box-shadow: 4px 4px 0 #000;
-    }
-
-    .card h2 {
-      font-size: clamp(28px, 4vw, 44px);
-      line-height: 1.05;
-      margin-bottom: 12px;
-      letter-spacing: -0.04em;
-    }
-
-    .lead {
-      margin-bottom: 24px;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 16px;
-    }
-
-    .form {
-      display: grid;
-      gap: 16px;
-    }
-
-    .field {
-      display: grid;
-      gap: 7px;
-    }
-
-    label {
-      color: #f8f8f8;
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      border: 2px solid rgba(255,255,255,0.12);
-      border-radius: 18px;
-      background: rgba(255,255,255,0.08);
-      color: var(--text);
-      padding: 15px 16px;
-      font: inherit;
-      outline: none;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
-    }
-
-    textarea {
-      min-height: 104px;
-      resize: vertical;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: rgba(247,242,232,0.45);
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: var(--orange);
-      box-shadow: 0 0 0 5px rgba(255,122,24,0.14);
-      transform: translateY(-1px);
-    }
-
-    .button-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-top: 6px;
-    }
-
-    button {
-      border: 0;
-      cursor: pointer;
-      font: inherit;
-    }
-
-    .main-button,
-    .secondary-button {
-      min-height: 56px;
-      border-radius: 18px;
-      padding: 16px 20px;
-      font-weight: 950;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
-    }
-
-    .main-button {
-      flex: 1 1 220px;
-      color: #101010;
-      background: linear-gradient(135deg, var(--acid), var(--orange));
-      box-shadow: 7px 7px 0 #000;
-    }
-
-    .secondary-button {
-      color: var(--text);
-      background: rgba(255,255,255,0.08);
-      border: 2px solid rgba(255,255,255,0.12);
-    }
-
-    .main-button:hover,
-    .secondary-button:hover {
-      transform: translateY(-2px);
-    }
-
-    .main-button:disabled,
-    .secondary-button:disabled {
-      cursor: not-allowed;
-      opacity: 0.65;
-      transform: none;
-    }
-
-    .message {
-      display: none;
-      margin-top: 16px;
-      padding: 14px 16px;
-      border-radius: 18px;
-      line-height: 1.5;
-      font-weight: 700;
-    }
-
-    .message.show {
-      display: block;
-    }
-
-    .message.success {
-      background: rgba(56, 214, 107, 0.13);
-      border: 1px solid rgba(56, 214, 107, 0.5);
-      color: #caffd9;
-    }
-
-    .message.error {
-      background: rgba(255, 71, 87, 0.13);
-      border: 1px solid rgba(255, 71, 87, 0.5);
-      color: #ffd0d5;
-    }
-
-    .progress {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 22px;
-    }
-
-    .dot {
-      height: 8px;
-      flex: 1;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.12);
-      overflow: hidden;
-    }
-
-    .dot.active {
-      background: linear-gradient(90deg, var(--orange), var(--acid));
-      box-shadow: 0 0 18px rgba(255,122,24,0.35);
-    }
-
-    .final-box {
-      padding: 24px;
-      border-radius: 24px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.14);
-    }
-
-    .final-box strong {
-      color: var(--acid);
-    }
-
-    .tiny {
-      margin-top: 14px;
-      color: rgba(247,242,232,0.58);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    @media (max-width: 980px) {
-      .page {
-        align-items: flex-start;
-      }
-
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        min-height: 520px;
-      }
-
-      .hero-copy {
-        margin-top: 50px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .page {
-        padding: 12px;
-      }
-
-      .hero,
-      .card {
-        border-radius: 24px;
-        padding: 24px;
-      }
-
-      .hero::before {
-        inset: 12px;
-        border-radius: 18px;
-      }
-
-      .graffiti {
-        margin-top: 36px;
-      }
-
-      .graffiti-mark {
-        display: none;
-      }
-
-      .hero-copy p,
-      .lead {
-        font-size: 15px;
-      }
-    }
-  </style>
+  <title>Поток — лаборатория движения</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/site.css" />
 </head>
 <body>
-  <main class="page">
-    <div class="layout">
-      <section class="hero" aria-label="Поток">
-        <div>
-          <div class="tagline"><span></span> parkour community</div>
-          <div class="graffiti">Поток</div>
-          <div class="graffiti-mark">move / jump / flow</div>
-        </div>
-
-        <div class="hero-copy">
-          <h1>Запись в команду движения</h1>
-          <p>
-            Заполни короткую заявку, а потом пройди отдельный опросник. Так мы поймем,
-            кто ты, зачем идешь в Поток и как тебе лучше включиться в тренировки и сообщество.
-          </p>
-          <div class="hero-bottom" aria-label="Особенности">
-            <div class="pill">Паркур</div>
-            <div class="pill">Команда</div>
-            <div class="pill">Движение</div>
-            <div class="pill">Городская культура</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="card" aria-label="Форма записи">
-        <div class="view active" id="applicationView">
-          <div class="progress" aria-hidden="true">
-            <div class="dot active"></div>
-            <div class="dot"></div>
-          </div>
-          <span class="step-label">Шаг 1 / заявка</span>
-          <h2>Записаться</h2>
-          <p class="lead">Оставь данные. После отправки откроется отдельный опросник из 5 вопросов.</p>
-
-          <form class="form" id="applicationForm">
-            <div class="field">
-              <label for="fullName">ФИО</label>
-              <input id="fullName" name="fullName" type="text" placeholder="Иванов Иван Иванович" autocomplete="name" required />
-            </div>
-
-            <div class="field">
-              <label for="age">Возраст</label>
-              <input id="age" name="age" type="number" min="7" max="99" placeholder="18" required />
-            </div>
-
-            <div class="field">
-              <label for="phone">Телефон</label>
-              <input id="phone" name="phone" type="tel" placeholder="+7 999 123-45-67" autocomplete="tel" required />
-            </div>
-
-            <div class="field">
-              <label for="telegram">Ник в Telegram</label>
-              <input id="telegram" name="telegram" type="text" placeholder="@username" required />
-            </div>
-
-            <div class="field">
-              <label for="faculty">Факультет</label>
-              <input id="faculty" name="faculty" type="text" placeholder="Например: ИТ / дизайн / спорт" required />
-            </div>
-
-            <div class="button-row">
-              <button class="main-button" type="submit" id="applicationButton">Записаться</button>
-            </div>
-          </form>
-
-          <div class="message error" id="applicationError"></div>
-          <p class="tiny">Данные заявки отправляются организаторам в Telegram-чат.</p>
-        </div>
-
-        <div class="view" id="surveyView">
-          <div class="progress" aria-hidden="true">
-            <div class="dot active"></div>
-            <div class="dot active"></div>
-          </div>
-          <span class="step-label">Шаг 2 / опросник</span>
-          <h2>Опросник Потока</h2>
-          <p class="lead">Ответь честно и спокойно. Это поможет нам понять твою мотивацию и ожидания.</p>
-
-          <form class="form" id="surveyForm">
-            <div class="field">
-              <label for="answer1">1. Зачем ты хочешь попасть в Поток?</label>
-              <textarea id="answer1" name="answer1" placeholder="Напиши развернутый ответ" required></textarea>
-            </div>
-
-            <div class="field">
-              <label for="answer2">2. Чему ты хочешь научиться?</label>
-              <textarea id="answer2" name="answer2" placeholder="Например: паркур, дисциплина, работа в команде" required></textarea>
-            </div>
-
-            <div class="field">
-              <label for="answer3">3. Что тебя мотивирует тренироваться и не бросать?</label>
-              <textarea id="answer3" name="answer3" placeholder="Что будет держать тебя в процессе?" required></textarea>
-            </div>
-
-            <div class="field">
-              <label for="answer4">4. Есть ли у тебя опыт в паркуре, спорте или движении?</label>
-              <textarea id="answer4" name="answer4" placeholder="Расскажи про любой релевантный опыт" required></textarea>
-            </div>
-
-            <div class="field">
-              <label for="answer5">5. Готов ли ты поддерживать проект донатом/взносом? Если да — в каком формате?</label>
-              <textarea id="answer5" name="answer5" placeholder="Да/нет/пока не знаю + детали" required></textarea>
-            </div>
-
-            <div class="field">
-              <label for="answer6">6. Почему именно Поток? Что привело тебя к нам, а не в другое место?</label>
-              <textarea id="answer6" name="answer6" placeholder="Расскажи, что зацепило или как ты о нас узнал" required></textarea>
-            </div>
-
-            <div class="button-row">
-              <button class="secondary-button" type="button" id="backToApplication">Назад</button>
-              <button class="main-button" type="submit" id="surveyButton">Отправить опрос</button>
-            </div>
-          </form>
-
-          <div class="message error" id="surveyError"></div>
-        </div>
-
-        <div class="view" id="finalView">
-          <span class="step-label">Готово</span>
-          <h2>Заявка отправлена</h2>
-          <div class="final-box">
-            <p><strong>Спасибо!</strong> Заявка и ответы на опросник уже ушли организаторам в Telegram.</p>
-            <p class="tiny">Мы посмотрим ответы и свяжемся с тобой через телефон или Telegram.</p>
-          </div>
-        </div>
-      </section>
+  <header class="site-nav" id="siteNav">
+    <a class="brand" href="index.html"><img src="assets/img/logo.jpg" alt="" width="44" height="44" /><span>Поток</span></a>
+    <nav class="nav-links" id="navLinks" aria-label="Разделы">
+      <a href="method.html">Методика</a>
+      <a href="schedule.html">Расписание</a>
+      <a href="events.html">События</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="main-button nav-cta" href="apply.html">В поток</a>
+      <button class="menu-button" id="menuButton" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Меню"><span></span><span></span><span></span></button>
     </div>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <div>
+        <div class="kicker"><i></i> лаборатория движения</div>
+        <div class="graffiti">Поток</div>
+        <h1>Сцена вместо абонемента</h1>
+        <p class="lead">Два часа: паркур, трюк и актёрский кусок. В конце семестра — роль в паркур-спектакле или экшн-фильме, не очередной абонемент.</p>
+        <div class="pills" aria-label="О чём лаборатория">
+          <span class="pill">Паркур</span>
+          <span class="pill">Трюк</span>
+          <span class="pill">Сцена</span>
+          <span class="pill">14+</span>
+        </div>
+        <div class="button-row">
+          <a class="main-button" href="apply.html">В поток</a>
+          <a class="secondary-button" href="#method-teaser">Как это устроено</a>
+        </div>
+      </div>
+      <div class="frame">
+        <img src="assets/img/jump.png" alt="Прыжок в тёмном зале" />
+      </div>
+    </section>
+
+    <section class="wrap section" id="method-teaser">
+      <h2>Не зал и не секция</h2>
+      <p class="lead">Тело собирается вместе со смелостью и сценой. Результат можно показать, а не только отметить в абонементе.</p>
+      <div class="cards">
+        <article class="card">
+          <div class="frame acid"><img src="assets/img/hands.png" alt="Руки на снаряде" /></div>
+          <h3>Живое тело</h3>
+          <p>Сила, падения и координация, которые остаются после занятия, а не сгорают на дорожке.</p>
+        </article>
+        <article class="card">
+          <div class="frame"><img src="assets/img/circle.jpg" alt="Круг лаборатории после занятия" /></div>
+          <h3>Свой круг</h3>
+          <p>Одна группа, одни репетиции. Не поток незнакомцев в зале.</p>
+        </article>
+        <article class="card">
+          <div class="frame purple"><img src="assets/img/finale.png" alt="Финальный показ" /></div>
+          <h3>Публичный результат</h3>
+          <p>Роль в паркур-спектакле или экшн-фильме, а не бесконечный набор элементов.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap section">
+      <h2>Путь</h2>
+      <div class="steps">
+        <article class="step"><span class="step-num">01</span><h3>Заявка</h3><p>Короткая анкета и опросник. Мы понимаем, кто приходит.</p></article>
+        <article class="step"><span class="step-num">02</span><h3>Первое занятие</h3><p>Безопасный вход: падения, тело, как устроен зал.</p></article>
+        <article class="step"><span class="step-num">03</span><h3>Регулярные 2 часа</h3><p>Паркур, трюк и актёрский кусок каждую встречу.</p></article>
+        <article class="step"><span class="step-num">04</span><h3>Показ</h3><p>Спектакль или фильм. Ты в кадре, не в зале для зрителей.</p></article>
+      </div>
+      <div class="button-row" style="margin-top:22px">
+        <a class="main-button" href="apply.html">Хочу на первое</a>
+      </div>
+    </section>
+
+    <section class="wrap section circle-band">
+      <div class="frame acid">
+        <img src="assets/img/circle.jpg" alt="Люди сидят кругом в светлом зале после тренировки" />
+      </div>
+      <p class="caption">Свой круг, не абонемент</p>
+    </section>
+
+    <section class="wrap section">
+      <h2>Кто ведёт</h2>
+      <p class="lead">Два преподавателя на одном занятии: один держит тело и падения, второй собирает это в сцену.</p>
+      <div class="faces">
+        <article class="face">
+          <div class="frame"><img src="assets/img/alina-sorokina.png" alt="Алина Сорокина" /></div>
+          <h3>Алина Сорокина</h3>
+          <p>Паркур и безопасные падения.</p>
+          <p class="note">8 лет в движении, 4 года ведёт взрослых. Первое занятие строит так, чтобы человек ушёл умея падать, а не бояться зала. Раньше тренировала уличные группы, сейчас держит вход в лабораторию.</p>
+        </article>
+        <article class="face">
+          <div class="frame"><img src="assets/img/ilya-kravtsov.png" alt="Илья Кравцов" /></div>
+          <h3>Илья Кравцов</h3>
+          <p>Трюк и актёрский кусок.</p>
+          <p class="note">Ставил сценическое движение и трюковые связки для небольших показов. На занятии переводит элемент в действие: зачем прыжок, кто персонаж, что видит зритель.</p>
+        </article>
+      </div>
+      <div class="button-row" style="margin-top:22px">
+        <a class="main-button" href="method.html">Смотреть методику</a>
+      </div>
+    </section>
+
+    <section class="wrap section">
+      <h2>Ближайший показ</h2>
+      <article class="event-card">
+        <div class="frame"><img src="assets/img/rehearsal.png" alt="Репетиция паркур-спектакля" /></div>
+        <h3>Паркур-спектакль</h3>
+        <p>Дата объявим. Путь к показу один — через занятия, не отдельным билетом.</p>
+        <div class="button-row" style="margin-top:16px">
+          <a class="secondary-button" href="events.html">Все события</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="wrap section finale">
+      <h2>Не ещё одна тренировка</h2>
+      <p class="lead">Лаборатория для тех, кому тесно в зале и скучно в «просто паркуре». 14+.</p>
+      <a class="main-button" href="apply.html">В поток</a>
+    </section>
   </main>
 
-  <script>
-    // Если фронтенд размещен отдельно на Netlify, оставляем Render backend.
-    // Для локального теста через server.js можно заменить на пустую строку: ''.
-    const API_BASE_URL = 'https://potok-applications-backend.onrender.com';
-
-    const applicationView = document.getElementById('applicationView');
-    const surveyView = document.getElementById('surveyView');
-    const finalView = document.getElementById('finalView');
-    const applicationForm = document.getElementById('applicationForm');
-    const surveyForm = document.getElementById('surveyForm');
-    const applicationButton = document.getElementById('applicationButton');
-    const surveyButton = document.getElementById('surveyButton');
-    const applicationError = document.getElementById('applicationError');
-    const surveyError = document.getElementById('surveyError');
-    const backToApplication = document.getElementById('backToApplication');
-
-    let currentApplicationId = localStorage.getItem('potokApplicationId') || null;
-
-    function showView(view) {
-      [applicationView, surveyView, finalView].forEach(item => item.classList.remove('active'));
-      view.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function showError(element, text) {
-      element.textContent = text;
-      element.classList.add('show');
-    }
-
-    function hideError(element) {
-      element.textContent = '';
-      element.classList.remove('show');
-    }
-
-    function normalizeTelegram(value) {
-      const trimmed = value.trim();
-      if (!trimmed) return trimmed;
-      return trimmed.startsWith('@') ? trimmed : '@' + trimmed;
-    }
-
-    applicationForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      hideError(applicationError);
-
-      const payload = {
-        fullName: document.getElementById('fullName').value.trim(),
-        age: document.getElementById('age').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        telegram: normalizeTelegram(document.getElementById('telegram').value),
-        faculty: document.getElementById('faculty').value.trim()
-      };
-
-      applicationButton.disabled = true;
-      applicationButton.textContent = 'Отправляем...';
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/applications`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const result = await response.json();
-
-        if (!response.ok || result.status !== 'ok') {
-          throw new Error(result.message || 'Не удалось отправить заявку');
-        }
-
-        currentApplicationId = result.applicationId;
-        localStorage.setItem('potokApplicationId', currentApplicationId);
-        showView(surveyView);
-      } catch (error) {
-        console.error(error);
-        showError(applicationError, error.message || 'Произошла ошибка. Попробуй еще раз.');
-      } finally {
-        applicationButton.disabled = false;
-        applicationButton.textContent = 'Записаться';
-      }
-    });
-
-    backToApplication.addEventListener('click', () => {
-      showView(applicationView);
-    });
-
-    surveyForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      hideError(surveyError);
-
-      if (!currentApplicationId) {
-        showError(surveyError, 'Не найдена заявка. Вернись на первый шаг и отправь форму еще раз.');
-        return;
-      }
-
-      const payload = {
-        applicationId: currentApplicationId,
-        answers: {
-          q1: document.getElementById('answer1').value.trim(),
-          q2: document.getElementById('answer2').value.trim(),
-          q3: document.getElementById('answer3').value.trim(),
-          q4: document.getElementById('answer4').value.trim(),
-          q5: document.getElementById('answer5').value.trim(),
-          q6: document.getElementById('answer6').value.trim()
-        }
-      };
-
-      surveyButton.disabled = true;
-      surveyButton.textContent = 'Отправляем...';
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/survey`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const result = await response.json();
-
-        if (!response.ok || result.status !== 'ok') {
-          throw new Error(result.message || 'Не удалось отправить опросник');
-        }
-
-        localStorage.removeItem('potokApplicationId');
-        surveyForm.reset();
-        showView(finalView);
-      } catch (error) {
-        console.error(error);
-        showError(surveyError, error.message || 'Произошла ошибка. Попробуй еще раз.');
-      } finally {
-        surveyButton.disabled = false;
-        surveyButton.textContent = 'Отправить опрос';
-      }
-    });
-  </script>
+  <footer class="site-footer">
+    <p>Лаборатория Поток. Паркур, трюк, сцена. 14+.</p>
+    <a class="tg-slot" href="https://t.me/parkourfox" target="_blank" rel="noopener">Telegram · @parkourfox</a>
+    <a class="main-button" href="apply.html">В поток</a>
+  </footer>
+  <script src="assets/js/nav.js"></script>
 </body>
 </html>

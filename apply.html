@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Заявка — Поток</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+</head>
+<body>
+  <header class="site-nav" id="siteNav">
+    <a class="brand" href="index.html"><img src="assets/img/logo.jpg" alt="" width="44" height="44" /><span>Поток</span></a>
+    <nav class="nav-links" id="navLinks" aria-label="Разделы">
+      <a href="method.html">Методика</a>
+      <a href="schedule.html">Расписание</a>
+      <a href="events.html">События</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="main-button nav-cta" href="apply.html">В поток</a>
+      <button class="menu-button" id="menuButton" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main class="apply-layout">
+    <section class="apply-hero" aria-label="Поток">
+      <div>
+        <div class="kicker"><i></i> parkour community</div>
+        <div class="graffiti">Поток</div>
+      </div>
+      <div>
+        <h1>Запись в команду движения</h1>
+        <p class="lead">Заполни короткую заявку, а потом пройди отдельный опросник. Так мы поймем, кто ты, зачем идешь в Поток и как тебе лучше включиться в тренировки и сообщество.</p>
+        <div class="pills" aria-label="Особенности">
+          <span class="pill">Паркур</span>
+          <span class="pill">Команда</span>
+          <span class="pill">Движение</span>
+          <span class="pill">Городская культура</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="apply-card" aria-label="Форма записи">
+      <div class="view active" id="applicationView">
+        <div class="progress" aria-hidden="true">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+        </div>
+        <span class="step-label">Шаг 1 / заявка</span>
+        <h2>Записаться</h2>
+        <p class="lead">Оставь данные. После отправки откроется отдельный опросник из 5 вопросов.</p>
+
+        <form class="form" id="applicationForm">
+          <div class="field">
+            <label for="fullName">ФИО</label>
+            <input id="fullName" name="fullName" type="text" placeholder="Иванов Иван Иванович" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="age">Возраст</label>
+            <input id="age" name="age" type="number" min="14" max="99" placeholder="18" required />
+          </div>
+          <div class="field">
+            <label for="phone">Телефон</label>
+            <input id="phone" name="phone" type="tel" placeholder="+7 999 123-45-67" autocomplete="tel" required />
+          </div>
+          <div class="field">
+            <label for="telegram">Ник в Telegram</label>
+            <input id="telegram" name="telegram" type="text" placeholder="@username" required />
+          </div>
+          <div class="field">
+            <label for="faculty">Факультет</label>
+            <input id="faculty" name="faculty" type="text" placeholder="Например: ИТ / дизайн / спорт" required />
+          </div>
+          <div class="button-row">
+            <button class="main-button" type="submit" id="applicationButton">Записаться</button>
+          </div>
+        </form>
+        <div class="message error" id="applicationError"></div>
+        <p class="tiny">Данные заявки отправляются организаторам в Telegram-чат.</p>
+      </div>
+
+      <div class="view" id="surveyView">
+        <div class="progress" aria-hidden="true">
+          <div class="dot active"></div>
+          <div class="dot active"></div>
+        </div>
+        <span class="step-label">Шаг 2 / опросник</span>
+        <h2>Опросник Потока</h2>
+        <p class="lead">Ответь честно и спокойно. Это поможет нам понять твою мотивацию и ожидания.</p>
+        <form class="form" id="surveyForm">
+          <div class="field">
+            <label for="answer1">1. Зачем ты хочешь попасть в Поток?</label>
+            <textarea id="answer1" name="answer1" placeholder="Напиши развернутый ответ" required></textarea>
+          </div>
+          <div class="field">
+            <label for="answer2">2. Чему ты хочешь научиться?</label>
+            <textarea id="answer2" name="answer2" placeholder="Например: паркур, дисциплина, работа в команде" required></textarea>
+          </div>
+          <div class="field">
+            <label for="answer3">3. Что тебя мотивирует тренироваться и не бросать?</label>
+            <textarea id="answer3" name="answer3" placeholder="Что будет держать тебя в процессе?" required></textarea>
+          </div>
+          <div class="field">
+            <label for="answer4">4. Есть ли у тебя опыт в паркуре, спорте или движении?</label>
+            <textarea id="answer4" name="answer4" placeholder="Расскажи про любой релевантный опыт" required></textarea>
+          </div>
+          <div class="field">
+            <label for="answer5">5. Готов ли ты поддерживать проект донатом/взносом? Если да — в каком формате?</label>
+            <textarea id="answer5" name="answer5" placeholder="Да/нет/пока не знаю + детали" required></textarea>
+          </div>
+          <div class="field">
+            <label for="answer6">6. Почему именно Поток? Что привело тебя к нам, а не в другое место?</label>
+            <textarea id="answer6" name="answer6" placeholder="Расскажи, что зацепило или как ты о нас узнал" required></textarea>
+          </div>
+          <div class="button-row">
+            <button class="secondary-button" type="button" id="backToApplication">Назад</button>
+            <button class="main-button" type="submit" id="surveyButton">Отправить опрос</button>
+          </div>
+        </form>
+        <div class="message error" id="surveyError"></div>
+      </div>
+
+      <div class="view" id="finalView">
+        <span class="step-label">Готово</span>
+        <h2>Заявка отправлена</h2>
+        <div class="final-box">
+          <p><strong>Спасибо!</strong> Заявка и ответы на опросник уже ушли организаторам в Telegram.</p>
+          <p class="tiny">Мы посмотрим ответы и свяжемся с тобой через телефон или Telegram.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Лаборатория Поток. Паркур, трюк, сцена. 14+.</p>
+    <a class="tg-slot" href="https://t.me/parkourfox" target="_blank" rel="noopener">Telegram · @parkourfox</a>
+    <a class="main-button" href="apply.html">В поток</a>
+  </footer>
+  <script src="assets/js/nav.js"></script>
+  <script>
+    const API_BASE_URL = 'https://potok-applications-backend.onrender.com';
+    const applicationView = document.getElementById('applicationView');
+    const surveyView = document.getElementById('surveyView');
+    const finalView = document.getElementById('finalView');
+    const applicationForm = document.getElementById('applicationForm');
+    const surveyForm = document.getElementById('surveyForm');
+    const applicationButton = document.getElementById('applicationButton');
+    const surveyButton = document.getElementById('surveyButton');
+    const applicationError = document.getElementById('applicationError');
+    const surveyError = document.getElementById('surveyError');
+    const backToApplication = document.getElementById('backToApplication');
+    let currentApplicationId = localStorage.getItem('potokApplicationId') || null;
+
+    function showView(view) {
+      [applicationView, surveyView, finalView].forEach(item => item.classList.remove('active'));
+      view.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showError(element, text) {
+      element.textContent = text;
+      element.classList.add('show');
+    }
+
+    function hideError(element) {
+      element.textContent = '';
+      element.classList.remove('show');
+    }
+
+    function normalizeTelegram(value) {
+      const trimmed = value.trim();
+      if (!trimmed) return trimmed;
+      return trimmed.startsWith('@') ? trimmed : '@' + trimmed;
+    }
+
+    applicationForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      hideError(applicationError);
+      const payload = {
+        fullName: document.getElementById('fullName').value.trim(),
+        age: document.getElementById('age').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        telegram: normalizeTelegram(document.getElementById('telegram').value),
+        faculty: document.getElementById('faculty').value.trim()
+      };
+      applicationButton.disabled = true;
+      applicationButton.textContent = 'Отправляем...';
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/applications`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!response.ok || result.status !== 'ok') {
+          throw new Error(result.message || 'Не удалось отправить заявку');
+        }
+        currentApplicationId = result.applicationId;
+        localStorage.setItem('potokApplicationId', currentApplicationId);
+        showView(surveyView);
+      } catch (error) {
+        console.error(error);
+        showError(applicationError, error.message || 'Произошла ошибка. Попробуй еще раз.');
+      } finally {
+        applicationButton.disabled = false;
+        applicationButton.textContent = 'Записаться';
+      }
+    });
+
+    backToApplication.addEventListener('click', () => {
+      showView(applicationView);
+    });
+
+    surveyForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      hideError(surveyError);
+      if (!currentApplicationId) {
+        showError(surveyError, 'Не найдена заявка. Вернись на первый шаг и отправь форму еще раз.');
+        return;
+      }
+      const payload = {
+        applicationId: currentApplicationId,
+        answers: {
+          q1: document.getElementById('answer1').value.trim(),
+          q2: document.getElementById('answer2').value.trim(),
+          q3: document.getElementById('answer3').value.trim(),
+          q4: document.getElementById('answer4').value.trim(),
+          q5: document.getElementById('answer5').value.trim(),
+          q6: document.getElementById('answer6').value.trim()
+        }
+      };
+      surveyButton.disabled = true;
+      surveyButton.textContent = 'Отправляем...';
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/survey`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!response.ok || result.status !== 'ok') {
+          throw new Error(result.message || 'Не удалось отправить опросник');
+        }
+        localStorage.removeItem('potokApplicationId');
+        surveyForm.reset();
+        showView(finalView);
+      } catch (error) {
+        console.error(error);
+        showError(surveyError, error.message || 'Произошла ошибка. Попробуй еще раз.');
+      } finally {
+        surveyButton.disabled = false;
+        surveyButton.textContent = 'Отправить опрос';
+      }
+    });
+
+    const nameField = document.getElementById('fullName');
+    if (nameField && applicationView.classList.contains('active')) {
+      nameField.focus();
+    }
+
+    document.querySelectorAll('a[href="apply.html"]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const active = document.querySelector('.view.active') || applicationView;
+        active.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (applicationView.classList.contains('active') && nameField) {
+          nameField.focus();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

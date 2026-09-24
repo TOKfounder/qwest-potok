@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>События — Поток</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+</head>
+<body>
+  <header class="site-nav" id="siteNav">
+    <a class="brand" href="index.html"><img src="assets/img/logo.jpg" alt="" width="44" height="44" /><span>Поток</span></a>
+    <nav class="nav-links" id="navLinks" aria-label="Разделы">
+      <a href="method.html">Методика</a>
+      <a href="schedule.html">Расписание</a>
+      <a href="events.html" aria-current="page">События</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="main-button nav-cta" href="apply.html">В поток</a>
+      <button class="menu-button" id="menuButton" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="wrap page-head">
+      <div class="kicker"><i></i> события</div>
+      <h1>Два итога, не лента новостей</h1>
+      <p class="lead">Показ не продаётся отдельно. Роль появляется из регулярных занятий.</p>
+    </section>
+
+    <section class="wrap section">
+      <div class="event-grid">
+        <article class="event-card">
+          <div class="frame"><img src="assets/img/rehearsal.png" alt="Репетиция паркур-спектакля" /></div>
+          <h2>Паркур-спектакль</h2>
+          <p>Живой показ: то, что собрали на занятиях, выходит на сцену.</p>
+          <p>Ученик в роли, не в зрительном зале.</p>
+          <p class="slot">Статус: дата объявим</p>
+          <div class="button-row" style="margin-top:16px">
+            <a class="main-button" href="apply.html">Хочу в этот показ</a>
+          </div>
+        </article>
+        <article class="event-card">
+          <div class="frame purple"><img src="assets/img/finale.png" alt="Кадр экшн-фильма" /></div>
+          <h2>Экшн-фильм</h2>
+          <p>Снятая история. Трюк и актёрский кусок остаются в кадре.</p>
+          <p>Ученик в роли, не в зрительном зале.</p>
+          <p class="slot">Статус: дата объявим</p>
+          <div class="button-row" style="margin-top:16px">
+            <a class="main-button" href="apply.html">Хочу в этот показ</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Лаборатория Поток. Паркур, трюк, сцена. 14+.</p>
+    <a class="tg-slot" href="https://t.me/parkourfox" target="_blank" rel="noopener">Telegram · @parkourfox</a>
+    <a class="main-button" href="apply.html">В поток</a>
+  </footer>
+  <script src="assets/js/nav.js"></script>
+</body>
+</html>

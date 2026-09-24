@@ -99,6 +99,14 @@ app.post('/api/applications', async (req, res) => {
       });
     }
 
+    const ageNumber = Number(String(age).trim());
+    if (!Number.isInteger(ageNumber) || ageNumber < 14 || ageNumber > 99) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Запись с 14 лет'
+      });
+    }
+
     const application = {
       id: Date.now().toString(),
       createdAt: nowMoscow(),
